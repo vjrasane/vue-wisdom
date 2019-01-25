@@ -1,28 +1,24 @@
-const { keys, shuffle } = require('lodash')
 const express = require('express')
 const morgan = require('morgan')
 const axios = require('axios')
 const server = express()
 
 require('dotenv').config()
-const { API_KEY, URL, PORT } = process.env
+const {
+  API_KEY,
+  URL,
+  PORT = 3000,
+  SPLIT = 'there is,there are,it is,are,will,can',
+  MAX_RETRIES = 20
+} = process.env
+
+const splitVerbs = SPLIT.split(',')
 
 const fetchQuotes = async () => {
   const response = await axios.get(URL, {
     headers: { Authorization: `Token token="${API_KEY}"` }
   })
   return response.data.quotes
-}
-
-const splitVerbs = {
-  'there is': ['there is'],
-  'there are': ['there are'],
-  'it is': ['it is'],
-  are: ['are'],
-  has: ['has'],
-  have: ['have'],
-  will: ['will', 'can'],
-  can: ['will', 'can']
 }
 
 const pad = str => ` ${str} `
@@ -38,27 +34,35 @@ const splitQuote = (quote, verb, indexer = (q, v) => q.lastIndexOf(v)) => {
   }
 }
 
+const NO_QUOTE = { quote: 'Out of quotes', author: 'Professional Quotemaker' }
+
 const getQuote = async () => {
   let quotes = []
-  let quote
-  let startSplit
+  let quote, verb, startSplit
+  let retries = 0
   while (!startSplit) {
+    if (retries >= MAX_RETRIES) return NO_QUOTE
     quotes = quotes.length ? quotes : await fetchQuotes()
     quote = quotes.pop()
-    const verb = keys(splitVerbs).find(v => quote.body.indexOf(pad(v)) > 0)
+    verb = splitVerbs.find(v => quote.body.indexOf(pad(v)) > 0)
     startSplit = splitQuote(quote.body, pad(verb), (q, v) => q.indexOf(v))
+    retries += 1
   }
 
+  retries = 0
   let endSplit
-  let verbs = splitVerbs[startSplit[1]]
   while (!endSplit) {
+    if (retries >= MAX_RETRIES) return NO_QUOTE
     quotes = quotes.length ? quotes : await fetchQuotes()
     quote = quotes.pop()
-    const verb = shuffle(verbs).find(v => quote.body.indexOf(pad(v)) > 0)
     endSplit = splitQuote(quote.body, pad(verb))
+    retries += 1
   }
 
-  return { quote: [startSplit[0].trim(), endSplit[2]].join(' '), author: quote.author }
+  return {
+    quote: [startSplit[0].trim(), endSplit[2]].join(' '),
+    author: quote.author
+  }
 }
 
 server.get('/api', async (req, res) => {

@@ -25,7 +25,7 @@ export default {
   created: function() {
     fetchQuote().then(({ quote, author }) => {
       this.quote = quote;
-      this.author = "-" + author;
+      this.author = "- " + author;
     });
   },
   methods: {
@@ -35,7 +35,7 @@ export default {
       this.author = ""; // clear author
       fetchQuote().then(({ quote, author }) => {
         this.quote = quote;
-        this.author = "-" + author;
+        this.author = "- " + author;
       });
     }
   }
