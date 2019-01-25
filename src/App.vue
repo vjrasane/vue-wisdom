@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    <img v-bind:key="img" class="background" src="http://lorempixel.com/g/1920/800" alt>
+    <img v-bind:key="img" class="background" src="http://lorempixel.com/1920/800" alt>
     <div class="wisdom">
       <div class="quote">{{ quote }}</div>
       <div class="author">{{ author }}</div>
