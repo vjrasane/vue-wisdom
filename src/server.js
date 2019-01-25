@@ -5,7 +5,7 @@ const axios = require('axios')
 const server = express()
 
 require('dotenv').config()
-const { API_KEY, URL } = process.env
+const { API_KEY, URL, PORT } = process.env
 
 const fetchQuotes = async () => {
   const response = await axios.get(URL, {
@@ -71,4 +71,4 @@ server.use(
 
 process.env.NODE_ENV === 'production' && server.use(express.static('dist'))
 
-server.listen(3000, () => console.log('Server listening on port 3000'))
+server.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
