@@ -11,7 +11,6 @@
 
 <script>
 import { get } from "axios";
-import { sample, first } from "lodash";
 
 const fetchQuote = () => get("/api").then(({ data }) => data);
 

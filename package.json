@@ -4,12 +4,16 @@
   "license": "Apache-2.0",
   "author": "vjrasane",
   "main": "index.js",
+  "engines": {
+    "node": "8.11.3"
+  },
   "scripts": {
-    "build:dev": "webpack --config build/webpack.config.dev.js",
+    "build": "webpack --config build/webpack.config.dev.js",
     "format-pkg": "format-package -w",
     "lint": "eslint --ext .js,.vue src",
     "start": "cross-env NODE_ENV=production node src/server.js",
-    "start:dev": "cross-env NODE_ENV=development concurrently \"nodemon src/server.js\" \"webpack-dev-server --config build/webpack.config.dev.js\""
+    "start:dev": "cross-env NODE_ENV=development concurrently \"nodemon src/server.js\" \"webpack-dev-server --config build/webpack.config.dev.js\"",
+    "postinstall": "npm run build"
   },
   "lint-staged": {
     "*.js": [
