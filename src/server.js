@@ -1,15 +1,14 @@
 const { keys, shuffle } = require('lodash')
-
-var express = require('express')
-var morgan = require('morgan')
-var axios = require('axios')
-var server = express()
+const express = require('express')
+const morgan = require('morgan')
+const axios = require('axios')
+const server = express()
 
 require('dotenv').config()
-const API_KEY = process.env.API_KEY
+const { API_KEY, URL } = process.env
 
 const fetchQuotes = async () => {
-  const response = await axios.get('https://favqs.com/api/quotes', {
+  const response = await axios.get(URL, {
     headers: { Authorization: `Token token="${API_KEY}"` }
   })
   return response.data.quotes
