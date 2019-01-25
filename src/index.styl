@@ -1,0 +1,50 @@
+body
+  overflow hidden
+  margin 0px
+
+.main-content
+  position relative 
+  display flex
+  flex-direction column
+  justify-content space-evenly
+  align-items center
+  width 1920px
+  height 800px
+
+.background
+  position absolute
+  z-index -1
+
+.wisdom
+  color white
+  font-family Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+  display flex
+  flex-direction column
+  align-items center
+  justify-content space-around
+  -webkit-text-stroke 2px black
+
+  .quote
+    width 80%
+    text-align left
+    font-size 4em
+
+  .author
+    width 70%
+    text-align right
+    font-size 3em
+
+.enlighten
+  border: 0px;
+  border-radius 30px
+  background-color: cyan;
+  height 7vh
+  width 10vw
+  font-size 1.5em
+  color white
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+
+  &:hover
+    background-color: white;
+    color black
+ 
