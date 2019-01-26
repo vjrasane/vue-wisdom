@@ -1,11 +1,11 @@
 <template>
   <div class="main-content">
-    <img v-bind:key="img" class="background" src="http://lorempixel.com/1920/800" alt>
+    <img v-bind:key="img" class="background" v-bind:src="source" alt>
     <div class="wisdom">
       <div class="quote">{{ quote }}</div>
       <div class="author">{{ author }}</div>
     </div>
-    <button class="enlighten" v-on:click="enlighten">ENLIGHTEN ME</button>
+    <button ref="button" class="enlighten" v-on:click="enlighten">ENLIGHTEN ME</button>
   </div>
 </template>
 
@@ -16,8 +16,11 @@ const fetchQuote = () => get("/api").then(({ data }) => data);
 
 export default {
   data: function() {
+    const height = Math.min(window.innerHeight, 1920)
+    const width = Math.min(window.innerWidth, 1920)
     return {
       img: Date.now(), // image id for forced refresh
+      source: `http://lorempixel.com/${width}/${height}` ,
       quote: "",
       author: ""
     };
@@ -37,6 +40,7 @@ export default {
         this.quote = quote;
         this.author = "- " + author;
       });
+      this.$refs.button.blur()
     }
   }
 };
