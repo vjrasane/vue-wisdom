@@ -33,14 +33,7 @@ export default {
   },
   methods: {
     enlighten: function() {
-      this.img = Date.now(); // forces image to refresh
-      this.quote = ""; // clear quote
-      this.author = ""; // clear author
-      fetchQuote().then(({ quote, author }) => {
-        this.quote = quote;
-        this.author = "- " + author;
-      });
-      this.$refs.button.blur()
+      location.reload()
     }
   }
 };
