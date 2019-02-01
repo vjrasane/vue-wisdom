@@ -5,7 +5,7 @@
       <div class="quote">{{ quote }}</div>
       <div class="author">{{ author }}</div>
     </div>
-    <button ref="button" class="enlighten" v-on:click="enlighten">ENLIGHTEN ME</button>
+    <div class="enlighten" v-on:click="enlighten">ENLIGHTEN ME</div>
   </div>
 </template>
 
@@ -33,7 +33,13 @@ export default {
   },
   methods: {
     enlighten: function() {
-      location.reload()
+      this.img = Date.now(); // forces image to refresh
+      this.quote = ""; // clear quote
+      this.author = ""; // clear author
+      fetchQuote().then(({ quote, author }) => {
+        this.quote = quote;
+        this.author = "- " + author;
+      });
     }
   }
 };
